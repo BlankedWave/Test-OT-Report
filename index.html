@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OT Progress Report Generator</title>
+  <style>
+    /* Basic page styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f2f2f2;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .checkbox-group {
+      margin-bottom: 20px;
+    }
+    .checkbox-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 20px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #output {
+      margin-top: 20px;
+      background-color: #e9e9e9;
+      padding: 15px;
+      border-radius: 4px;
+      min-height: 50px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>OT Progress Report Generator</h1>
+    
+    <!-- Input fields for OT name, Student name, and Company/School name -->
+    <div class="input-group">
+      <label for="otName">Occupational Therapist Name:</label>
+      <input type="text" id="otName" placeholder="Enter OT's name" />
+    </div>
+    <div class="input-group">
+      <label for="studentName">Student Name:</label>
+      <input type="text" id="studentName" placeholder="Enter student's name" />
+    </div>
+    <div class="input-group">
+      <label for="companyName">Company/School Name:</label>
+      <input type="text" id="companyName" placeholder="Enter company or school name" />
+    </div>
+    
+    <p>Select the relevant report components and add any additional comments:</p>
+    <div class="checkbox-group">
+      <label>
+        <input type="checkbox" value="demonstrates improved fine motor skills." /> 
+        Student demonstrates improved fine motor skills.
+      </label>
+      <label>
+        <input type="checkbox" value="shows better hand-eye coordination." /> 
+        Student shows better hand-eye coordination.
+      </label>
+      <label>
+        <input type="checkbox" value="has increased independence in daily tasks." /> 
+        Student has increased independence in daily tasks.
+      </label>
+      <label>
+        <input type="checkbox" value="exhibits enhanced cognitive processing." /> 
+        Student exhibits enhanced cognitive processing.
+      </label>
+      <label>
+        <input type="checkbox" value="is more engaged in group activities." /> 
+        Student is more engaged in group activities.
+      </label>
+    </div>
+    
+    <textarea id="userInput" placeholder="Enter additional observations..."></textarea>
+    <button id="generateBtn">Generate Report</button>
+    <button id="downloadBtn" style="display: none;">Download PDF</button>
+    <div id="output"></div>
+  </div>
+  
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // Generate the report based on input values
+    document.getElementById('generateBtn').addEventListener('click', function() {
+      const otName = document.getElementById('otName').value.trim();
+      const studentName = document.getElementById('studentName').value.trim();
+      const companyName = document.getElementById('companyName').value.trim();
+      
+      // Build header with input details
+      let header = "";
+      if (otName) header += "OT: " + otName + "\n";
+      if (studentName) header += "Student: " + studentName + "\n";
+      if (companyName) header += "School/Company: " + companyName + "\n\n";
+      
+      // Get selected phrases from checkboxes
+      let selectedPhrases = [];
+      const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+      checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+          selectedPhrases.push(checkbox.value);
+        }
+      });
+      
+      const userText = document.getElementById('userInput').value.trim();
+      let reportParagraph = header;
+      
+      if (selectedPhrases.length > 0) {
+        reportParagraph += "The student " + selectedPhrases.join(" ") + " ";
+      }
+      if (userText !== "") {
+        reportParagraph += userText;
+      }
+      
+      // Display the final report in the output div
+      document.getElementById('output').innerText = reportParagraph;
+      
+      // Show the Download PDF button
+      document.getElementById('downloadBtn').style.display = "block";
+    });
+    
+    // Download the generated report as a PDF
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const reportText = document.getElementById('output').innerText;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const lines = doc.splitTextToSize(reportText, 180);
+      doc.text(lines, 10, 10);
+      doc.save('progress_report.pdf');
+    });
+  </script>
+</body>
+</html>
