@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OT Progress Report Generator</title>
+  <title>Pediatric OT Progress Report Generator</title>
   <style>
     /* Basic page styling */
     body {
@@ -79,7 +79,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>OT Progress Report Generator</h1>
+    <h1>Pediatric OT Progress Report Generator</h1>
     
     <!-- Input fields for OT name, Student name, and Company/School name -->
     <div class="input-group">
@@ -95,31 +95,43 @@
       <input type="text" id="companyName" placeholder="Enter company or school name" />
     </div>
     
-    <p>Select the relevant report components and add any additional comments:</p>
+    <p>Select the relevant report components (pediatric OT observations):</p>
     <div class="checkbox-group">
       <label>
-        <input type="checkbox" value="demonstrates improved fine motor skills." /> 
-        Student demonstrates improved fine motor skills.
+        <input type="checkbox" value="exhibited significant improvement in fine motor skills, contributing to better hand function." /> 
+        Exhibited significant improvement in fine motor skills, contributing to better hand function.
       </label>
       <label>
-        <input type="checkbox" value="shows better hand-eye coordination." /> 
-        Student shows better hand-eye coordination.
+        <input type="checkbox" value="demonstrated enhanced gross motor skills and improved balance during physical activities." /> 
+        Demonstrated enhanced gross motor skills and improved balance during physical activities.
       </label>
       <label>
-        <input type="checkbox" value="has increased independence in daily tasks." /> 
-        Student has increased independence in daily tasks.
+        <input type="checkbox" value="showed progress in sensory processing, particularly in tactile and proprioceptive responses." /> 
+        Showed progress in sensory processing, particularly in tactile and proprioceptive responses.
       </label>
       <label>
-        <input type="checkbox" value="exhibits enhanced cognitive processing." /> 
-        Student exhibits enhanced cognitive processing.
+        <input type="checkbox" value="improved visual-motor integration, which supports academic tasks such as writing and drawing." /> 
+        Improved visual-motor integration, which supports academic tasks such as writing and drawing.
       </label>
       <label>
-        <input type="checkbox" value="is more engaged in group activities." /> 
-        Student is more engaged in group activities.
+        <input type="checkbox" value="exhibited enhanced self-regulation and coping strategies in group settings." /> 
+        Exhibited enhanced self-regulation and coping strategies in group settings.
+      </label>
+      <label>
+        <input type="checkbox" value="made progress in self-care skills including dressing, feeding, and personal hygiene." /> 
+        Made progress in self-care skills including dressing, feeding, and personal hygiene.
+      </label>
+      <label>
+        <input type="checkbox" value="demonstrated better social interactions and effective peer engagement during play." /> 
+        Demonstrated better social interactions and effective peer engagement during play.
+      </label>
+      <label>
+        <input type="checkbox" value="exhibited increased participation and focus in structured classroom activities." /> 
+        Exhibited increased participation and focus in structured classroom activities.
       </label>
     </div>
     
-    <textarea id="userInput" placeholder="Enter additional observations..."></textarea>
+    <textarea id="userInput" placeholder="Enter additional observations or recommendations..."></textarea>
     <button id="generateBtn">Generate Report</button>
     <button id="downloadBtn" style="display: none;">Download PDF</button>
     <div id="output"></div>
@@ -128,52 +140,62 @@
   <!-- jsPDF CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // Generate the report based on input values
+    // Function to generate a formal pediatric OT progress report
     document.getElementById('generateBtn').addEventListener('click', function() {
       const otName = document.getElementById('otName').value.trim();
       const studentName = document.getElementById('studentName').value.trim();
       const companyName = document.getElementById('companyName').value.trim();
+      const currentDate = new Date().toLocaleDateString();
       
-      // Build header with input details
-      let header = "";
+      // Build header section
+      let header = "Pediatric Occupational Therapy Progress Report\n\n";
       if (otName) header += "OT: " + otName + "\n";
       if (studentName) header += "Student: " + studentName + "\n";
-      if (companyName) header += "School/Company: " + companyName + "\n\n";
+      if (companyName) header += "School/Company: " + companyName + "\n";
+      header += "Date: " + currentDate + "\n\n";
       
       // Get selected phrases from checkboxes
-      let selectedPhrases = [];
+      let observations = [];
       const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
       checkboxes.forEach(function(checkbox) {
         if (checkbox.checked) {
-          selectedPhrases.push(checkbox.value);
+          observations.push(checkbox.value);
         }
       });
       
       const userText = document.getElementById('userInput').value.trim();
-      let reportParagraph = header;
       
-      if (selectedPhrases.length > 0) {
-        reportParagraph += "The student " + selectedPhrases.join(" ") + " ";
+      // Build the formal report content with sections
+      let report = header;
+      report += "Observations:\n";
+      if (observations.length > 0) {
+        // Combine observations into a formal paragraph
+        report += "The student " + observations.join(" ") + "\n\n";
+      } else {
+        report += "No specific observations were selected.\n\n";
       }
-      if (userText !== "") {
-        reportParagraph += userText;
-      }
+      
+      report += "Additional Comments:\n";
+      report += (userText !== "" ? userText : "None provided.") + "\n\n";
+      
+      report += "Summary:\n";
+      report += "Overall, the student continues to demonstrate measurable progress in the targeted areas. Ongoing therapy interventions are recommended to further support developmental goals.\n";
       
       // Display the final report in the output div
-      document.getElementById('output').innerText = reportParagraph;
+      document.getElementById('output').innerText = report;
       
       // Show the Download PDF button
       document.getElementById('downloadBtn').style.display = "block";
     });
     
-    // Download the generated report as a PDF
+    // Download the generated report as a PDF using jsPDF
     document.getElementById('downloadBtn').addEventListener('click', function() {
       const reportText = document.getElementById('output').innerText;
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       const lines = doc.splitTextToSize(reportText, 180);
       doc.text(lines, 10, 10);
-      doc.save('progress_report.pdf');
+      doc.save('Pediatric_OT_Progress_Report.pdf');
     });
   </script>
 </body>
