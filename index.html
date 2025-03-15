@@ -3,63 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pediatric OT Progress Report Generator</title>
+  <title>OT Evaluation Report Generator</title>
   <style>
-    /* Basic page styling */
+    /* Basic styling for a clean, form-based layout */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
-      background-color: #f2f2f2;
+      background-color: #f7f7f7;
     }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
       background-color: #fff;
       padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-    h1 {
+    h1, h2 {
       text-align: center;
     }
-    .input-group {
+    form > div {
+      margin-bottom: 20px;
+    }
+    .input-group, .textarea-group {
       margin-bottom: 15px;
     }
-    .input-group label {
+    .input-group label, .textarea-group label {
       display: block;
+      font-weight: bold;
       margin-bottom: 5px;
     }
-    .input-group input {
+    .input-group input, .textarea-group textarea {
       width: 100%;
       padding: 8px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
+    .textarea-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
     .checkbox-group {
-      margin-bottom: 20px;
+      margin-left: 15px;
     }
     .checkbox-group label {
       display: block;
       margin-bottom: 5px;
-    }
-    textarea {
-      width: 100%;
-      height: 100px;
-      margin-bottom: 20px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
+      font-weight: normal;
     }
     button {
-      display: block;
       width: 100%;
       padding: 15px;
       font-size: 16px;
-      border: none;
-      background-color: #4CAF50;
       color: #fff;
+      background-color: #4CAF50;
+      border: none;
       border-radius: 4px;
       cursor: pointer;
       margin-bottom: 10px;
@@ -68,123 +67,228 @@
       background-color: #45a049;
     }
     #output {
-      margin-top: 20px;
+      white-space: pre-wrap;
       background-color: #e9e9e9;
       padding: 15px;
       border-radius: 4px;
-      min-height: 50px;
-      white-space: pre-wrap;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Pediatric OT Progress Report Generator</h1>
-    
-    <!-- Input fields for OT name, Student name, and Company/School name -->
-    <div class="input-group">
-      <label for="otName">Occupational Therapist Name:</label>
-      <input type="text" id="otName" placeholder="Enter OT's name" />
-    </div>
-    <div class="input-group">
-      <label for="studentName">Student Name:</label>
-      <input type="text" id="studentName" placeholder="Enter student's name" />
-    </div>
-    <div class="input-group">
-      <label for="companyName">Company/School Name:</label>
-      <input type="text" id="companyName" placeholder="Enter company or school name" />
-    </div>
-    
-    <p>Select the relevant report components (pediatric OT observations):</p>
-    <div class="checkbox-group">
-      <label>
-        <input type="checkbox" value="exhibited significant improvement in fine motor skills, contributing to better hand function." /> 
-        Exhibited significant improvement in fine motor skills, contributing to better hand function.
-      </label>
-      <label>
-        <input type="checkbox" value="demonstrated enhanced gross motor skills and improved balance during physical activities." /> 
-        Demonstrated enhanced gross motor skills and improved balance during physical activities.
-      </label>
-      <label>
-        <input type="checkbox" value="showed progress in sensory processing, particularly in tactile and proprioceptive responses." /> 
-        Showed progress in sensory processing, particularly in tactile and proprioceptive responses.
-      </label>
-      <label>
-        <input type="checkbox" value="improved visual-motor integration, which supports academic tasks such as writing and drawing." /> 
-        Improved visual-motor integration, which supports academic tasks such as writing and drawing.
-      </label>
-      <label>
-        <input type="checkbox" value="exhibited enhanced self-regulation and coping strategies in group settings." /> 
-        Exhibited enhanced self-regulation and coping strategies in group settings.
-      </label>
-      <label>
-        <input type="checkbox" value="made progress in self-care skills including dressing, feeding, and personal hygiene." /> 
-        Made progress in self-care skills including dressing, feeding, and personal hygiene.
-      </label>
-      <label>
-        <input type="checkbox" value="demonstrated better social interactions and effective peer engagement during play." /> 
-        Demonstrated better social interactions and effective peer engagement during play.
-      </label>
-      <label>
-        <input type="checkbox" value="exhibited increased participation and focus in structured classroom activities." /> 
-        Exhibited increased participation and focus in structured classroom activities.
-      </label>
-    </div>
-    
-    <textarea id="userInput" placeholder="Enter additional observations or recommendations..."></textarea>
-    <button id="generateBtn">Generate Report</button>
-    <button id="downloadBtn" style="display: none;">Download PDF</button>
+    <h1>OT Evaluation Report Generator</h1>
+    <form id="reportForm">
+      <!-- General Information Section -->
+      <h2>General Information</h2>
+      <div class="input-group">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter student's name" />
+      </div>
+      <div class="input-group">
+        <label for="dateEvaluation">Date of Evaluation:</label>
+        <input type="date" id="dateEvaluation" />
+      </div>
+      <div class="input-group">
+        <label for="dateBirth">Date of Birth:</label>
+        <input type="date" id="dateBirth" />
+      </div>
+      <div class="input-group">
+        <label for="age">Chronological Age:</label>
+        <input type="text" id="age" placeholder="Enter age" />
+      </div>
+      <div class="input-group">
+        <label for="schoolName">School/Company:</label>
+        <input type="text" id="schoolName" placeholder="Enter school or company name" />
+      </div>
+      <div class="input-group">
+        <label for="grade">Grade:</label>
+        <input type="text" id="grade" placeholder="Enter grade" />
+      </div>
+      <div class="input-group">
+        <label for="evaluator">Evaluator (OT):</label>
+        <input type="text" id="evaluator" placeholder="Enter evaluator's name" />
+      </div>
+      <div class="input-group">
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" placeholder="Enter gender" />
+      </div>
+
+      <!-- Purpose of Evaluation -->
+      <div class="textarea-group">
+        <label for="purpose">Purpose of Evaluation:</label>
+        <textarea id="purpose" placeholder="Enter purpose of evaluation"></textarea>
+      </div>
+
+      <!-- Evidence of Information -->
+      <div class="textarea-group">
+        <label for="evidence">Evidence of Information:</label>
+        <textarea id="evidence" placeholder="Enter evidence of information"></textarea>
+      </div>
+
+      <!-- Validity Statement -->
+      <div class="textarea-group">
+        <label for="validity">Validity Statement:</label>
+        <textarea id="validity" placeholder="Enter validity statement"></textarea>
+      </div>
+
+      <!-- Background and Presenting Concerns -->
+      <div class="textarea-group">
+        <label for="background">Background and Presenting Concerns:</label>
+        <textarea id="background" placeholder="Enter background and presenting concerns"></textarea>
+      </div>
+
+      <!-- OT Profile -->
+      <div class="textarea-group">
+        <label for="otProfile">OT Profile:</label>
+        <textarea id="otProfile" placeholder="Enter OT profile information"></textarea>
+      </div>
+
+      <!-- Behaviors During Testing -->
+      <div class="textarea-group">
+        <label for="behaviors">Behaviors During Testing:</label>
+        <textarea id="behaviors" placeholder="Enter behaviors during testing"></textarea>
+      </div>
+
+      <!-- Motor Skills / Sensory Motor Development -->
+      <div class="textarea-group">
+        <label for="motorSkills">Motor Skills / Sensory Motor Development:</label>
+        <textarea id="motorSkills" placeholder="Enter observations related to motor skills and sensory motor development"></textarea>
+      </div>
+
+      <!-- Summary -->
+      <div class="textarea-group">
+        <label for="summary">Summary:</label>
+        <textarea id="summary" placeholder="Enter summary"></textarea>
+      </div>
+
+      <!-- Recommendations -->
+      <h2>Recommendations</h2>
+      <div class="checkbox-group">
+        <label><input type="checkbox" value="Allow extra time with written assignments."> Allow extra time with written assignments.</label>
+        <label><input type="checkbox" value="Allow use of a word processor for written output."> Allow use of a word processor for written output.</label>
+        <label><input type="checkbox" value="Use graphic organizers."> Use graphic organizers.</label>
+        <label><input type="checkbox" value="Use modified paper (e.g., graph paper or raised line paper)."> Use modified paper (e.g., graph paper or raised line paper).</label>
+        <label><input type="checkbox" value="Incorporate a multi-sensory approach in therapy sessions."> Incorporate a multi-sensory approach in therapy sessions.</label>
+        <label><input type="checkbox" value="Allow frequent movement breaks."> Allow frequent movement breaks.</label>
+        <label><input type="checkbox" value="Provide positive reinforcement."> Provide positive reinforcement.</label>
+        <label><input type="checkbox" value="Break down tasks into manageable units."> Break down tasks into manageable units.</label>
+        <label><input type="checkbox" value="Use checklists."> Use checklists.</label>
+        <label><input type="checkbox" value="Provide short breaks when refocusing is needed."> Provide short breaks when refocusing is needed.</label>
+      </div>
+      <div class="textarea-group">
+        <label for="additionalRecs">Additional Recommendations:</label>
+        <textarea id="additionalRecs" placeholder="Enter any additional recommendations"></textarea>
+      </div>
+
+      <button type="button" id="generateBtn">Generate Report</button>
+    </form>
+    <button type="button" id="downloadBtn" style="display: none;">Download PDF</button>
     <div id="output"></div>
   </div>
   
-  <!-- jsPDF CDN -->
+  <!-- jsPDF Library via CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // Function to generate a formal pediatric OT progress report
     document.getElementById('generateBtn').addEventListener('click', function() {
-      const otName = document.getElementById('otName').value.trim();
-      const studentName = document.getElementById('studentName').value.trim();
-      const companyName = document.getElementById('companyName').value.trim();
-      const currentDate = new Date().toLocaleDateString();
+      // Collect General Information
+      let studentName = document.getElementById('studentName').value;
+      let dateEvaluation = document.getElementById('dateEvaluation').value;
+      let dateBirth = document.getElementById('dateBirth').value;
+      let age = document.getElementById('age').value;
+      let schoolName = document.getElementById('schoolName').value;
+      let grade = document.getElementById('grade').value;
+      let evaluator = document.getElementById('evaluator').value;
+      let gender = document.getElementById('gender').value;
       
-      // Build header section
-      let header = "Pediatric Occupational Therapy Progress Report\n\n";
-      if (otName) header += "OT: " + otName + "\n";
-      if (studentName) header += "Student: " + studentName + "\n";
-      if (companyName) header += "School/Company: " + companyName + "\n";
-      header += "Date: " + currentDate + "\n\n";
+      // Collect Textareas
+      let purpose = document.getElementById('purpose').value;
+      let evidence = document.getElementById('evidence').value;
+      let validity = document.getElementById('validity').value;
+      let background = document.getElementById('background').value;
+      let otProfile = document.getElementById('otProfile').value;
+      let behaviors = document.getElementById('behaviors').value;
+      let motorSkills = document.getElementById('motorSkills').value;
+      let summary = document.getElementById('summary').value;
+      let additionalRecs = document.getElementById('additionalRecs').value;
       
-      // Get selected phrases from checkboxes
-      let observations = [];
-      const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
-      checkboxes.forEach(function(checkbox) {
+      // Get selected recommendations
+      let recs = [];
+      document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(function(checkbox) {
         if (checkbox.checked) {
-          observations.push(checkbox.value);
+          recs.push(checkbox.value);
         }
       });
       
-      const userText = document.getElementById('userInput').value.trim();
+      // Construct the report using the sample format from the provided PDF
+      let report = "";
+      report += "CONFIDENTIAL REPORT\n";
+      report += "OCCUPATIONAL THERAPY EVALUATION\n\n";
       
-      // Build the formal report content with sections
-      let report = header;
-      report += "Observations:\n";
-      if (observations.length > 0) {
-        // Combine observations into a formal paragraph
-        report += "The student " + observations.join(" ") + "\n\n";
-      } else {
-        report += "No specific observations were selected.\n\n";
+      // General Information Section
+      report += "General Information\n";
+      report += "-------------------\n";
+      report += "Student Name: " + studentName + "\n";
+      report += "Date of Evaluation: " + dateEvaluation + "\n";
+      report += "Date of Birth: " + dateBirth + "\n";
+      report += "Chronological Age: " + age + "\n";
+      report += "School/Company: " + schoolName + "\n";
+      report += "Grade: " + grade + "\n";
+      report += "Evaluator (OT): " + evaluator + "\n";
+      report += "Gender: " + gender + "\n\n";
+      
+      // Purpose of Evaluation Section
+      report += "Purpose of Evaluation\n";
+      report += "---------------------\n";
+      report += purpose + "\n\n";
+      
+      // Evidence of Information Section
+      report += "Evidence of Information\n";
+      report += "-----------------------\n";
+      report += evidence + "\n\n";
+      
+      // Validity Statement Section
+      report += "Validity Statement\n";
+      report += "------------------\n";
+      report += validity + "\n\n";
+      
+      // Background and Presenting Concerns Section
+      report += "Background and Presenting Concerns\n";
+      report += "------------------------------------\n";
+      report += background + "\n\n";
+      
+      // OT Profile Section
+      report += "OT Profile\n";
+      report += "----------\n";
+      report += otProfile + "\n\n";
+      
+      // Behaviors During Testing Section
+      report += "Behaviors During Testing\n";
+      report += "------------------------\n";
+      report += behaviors + "\n\n";
+      
+      // Motor Skills / Sensory Motor Development Section
+      report += "Motor Skills / Sensory Motor Development\n";
+      report += "-----------------------------------------\n";
+      report += motorSkills + "\n\n";
+      
+      // Summary Section
+      report += "Summary\n";
+      report += "-------\n";
+      report += summary + "\n\n";
+      
+      // Recommendations Section
+      report += "Recommendations\n";
+      report += "---------------\n";
+      if (recs.length > 0) {
+        report += recs.join("\n") + "\n";
+      }
+      if (additionalRecs.trim() !== "") {
+        report += additionalRecs + "\n";
       }
       
-      report += "Additional Comments:\n";
-      report += (userText !== "" ? userText : "None provided.") + "\n\n";
-      
-      report += "Summary:\n";
-      report += "Overall, the student continues to demonstrate measurable progress in the targeted areas. Ongoing therapy interventions are recommended to further support developmental goals.\n";
-      
-      // Display the final report in the output div
+      // Display the generated report
       document.getElementById('output').innerText = report;
-      
-      // Show the Download PDF button
       document.getElementById('downloadBtn').style.display = "block";
     });
     
@@ -195,7 +299,7 @@
       const doc = new jsPDF();
       const lines = doc.splitTextToSize(reportText, 180);
       doc.text(lines, 10, 10);
-      doc.save('Pediatric_OT_Progress_Report.pdf');
+      doc.save('OT_Evaluation_Report.pdf');
     });
   </script>
 </body>
